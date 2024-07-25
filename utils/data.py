@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from .utils import PLAYERS
 
 data = pd.read_csv('data.csv')
 
@@ -22,8 +23,11 @@ df['Down'] = df['Down'].astype(int)
 df["TD"] = df['TD'].astype(bool)
 
 # creating new columns
+
+def get_player_name(row: pd.Series):
+    return PLAYERS[row['Target']]
+
 df['Run'] = np.where(df['Play Type'].str.contains('run|jet sweep', regex=True), True, False)
 df['Special'] = np.where(df['Play Type'].str.contains('fg|punt', regex=True), True, False)
 df['First Down Conversion'] = np.where(df['YD Line'] + df['YDs Gained'] >= df['YD Line'] + df['YDs Left'], True, False)
-
-
+df['Target Name'] = df.apply(get_player_name, axis=1)
