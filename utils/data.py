@@ -29,5 +29,5 @@ def get_player_name(row: pd.Series):
 
 df['Run'] = np.where(df['Play Type'].str.contains('run|jet sweep', regex=True), True, False)
 df['Special'] = np.where(df['Play Type'].str.contains('fg|punt', regex=True), True, False)
-df['First Down Conversion'] = np.where(df['YD Line'] + df['YDs Gained'] >= df['YD Line'] + df['YDs Left'], True, False)
+df['First Down Conversion'] = np.where(df['YDs Gained'] >= df['YDs Left'], True, False)
 df['Target Name'] = df.apply(get_player_name, axis=1)

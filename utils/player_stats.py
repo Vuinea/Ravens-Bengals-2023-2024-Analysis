@@ -32,16 +32,22 @@ def get_best_redzone_target_by_yards(df: pd.DataFrame) -> pd.DataFrame:
     return redzone_completions[redzone_completions['Target'] == best_redzone_player]
 
 # getting the target with the most tds and first downs in the red zone
-def get_best_redzone_target_by_conversions(df: pd.DataFrame) -> np.int64:
-    pass
+# Returns all of the conversions made by the player
+def get_best_redzone_target_by_conversions(df: pd.DataFrame) -> pd.DataFrame:
+    conversions = team_stats.get_conversions(df, tds=True)
+    red_zone_conversions = conversions[conversions['YD Line'] >= 80]
+    grouped_conversions = red_zone_conversions.groupby(['Target'])
+    player = grouped_conversions.size().idxmax()
+    return red_zone_conversions[red_zone_conversions['Target'] == player]
+    
 
 # getting the target with the best completion percentage
-def get_best_redzone_target_by_completion_percentage(df: pd.DataFrame) -> np.int64:
+def get_best_redzone_target_by_completion_percentage(df: pd.DataFrame) -> pd.DataFrame:
     pass
 
 
 # name subject to change
-def get_best_third_down_based_on_yds_left(df: pd.DataFrame, yds_left: int) -> np.int64:
+def get_best_third_down_based_on_yds_left(df: pd.DataFrame, yds_left: int) -> pd.DataFrame:
     pass
 
 

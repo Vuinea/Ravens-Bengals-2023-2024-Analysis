@@ -21,7 +21,7 @@ def get_conversions(df: pd.DataFrame, tds=False) -> pd.DataFrame:
     results = df[df['First Down Conversion'] == True]
     if tds:
         tds = get_touchdowns(df)
-        results = pd.concat(results, tds)
+        results = pd.concat([results, tds])
     return results
 
 def get_flags(df: pd.DataFrame) -> pd.DataFrame:
