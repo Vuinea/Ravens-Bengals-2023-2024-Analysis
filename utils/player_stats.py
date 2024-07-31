@@ -40,11 +40,34 @@ def get_best_redzone_target_by_conversions(df: pd.DataFrame) -> pd.DataFrame:
     player = grouped_conversions.size().idxmax()
     return red_zone_conversions[red_zone_conversions['Target'] == player]
     
+# value counts
+# .apply()
+
+def _get_completion_percentage(df: pd.DataFrame):
+    attempts = df['Completion'].value_counts()
+    if 1 in attempts.index:
+        completions = attempts[1]
+        if 0 in attempts.index:
+            passing_attempts = attempts[1] + attempts[0]
+        else:
+            passing_attempts = completions
+    else:
+        completions = 0
+        # setting defcault value for passing attemots
+        passing_attempts = 1
+    return (completions/passing_attempts) * 100
 
 # getting the target with the best completion percentage
 def get_best_redzone_target_by_completion_percentage(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    redzone_passes = df[df['YD Line'] >= 80]
+    # getting rid of all the rows with -1 as target
+    redzone_passes = redzone_passes.loc[df['Target'] >= 0]
+    grouped_passes = redzone_passes.groupby('Target', sort=False)
 
+    passes = grouped_passes.apply(_get_completion_percentage)
+    passes = passes.astype(int)
+    player = passes.idxmax()
+    return redzone_passes[redzone_passes['Target'] == player]
 
 # name subject to change
 def get_best_third_down_based_on_yds_left(df: pd.DataFrame, yds_left: int) -> pd.DataFrame:
@@ -58,6 +81,6 @@ def get_best_converter(df: pd.DataFrame) -> np.int64:
 
 # gets the player with the most yards based on the quarter
 def get_best_player_yardage_by_quarter(df: pd.DataFrame, quarter: int) -> pd.DataFrame:
-    pass 
+    pass
 
 

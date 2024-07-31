@@ -3,13 +3,14 @@ from utils.data import df
 
 
 # redzone_tds = team_stats.get_redzone_tds(df)
-ans = player_stats.get_best_redzone_target_by_conversions(df)
-
+ans = player_stats.get_best_redzone_target_by_completion_percentage(df)
+player = utils.PLAYERS[ans.iloc[0]['Target']]
 # print(ans[['Play Type', 'Run']])
 # print(ans.columns)
 
 # print(type(ans))
 # print(ans['YD Line'])
 
-print(ans[['Target Name', 'YDs Left', 'YD Line']])
+# print(ans[['Target Name', 'YDs Left', 'YD Line']])
+print(player)
 
