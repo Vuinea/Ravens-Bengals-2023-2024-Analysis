@@ -1,6 +1,5 @@
 import pandas as pd
 from . import team_stats, utils
-import numpy as np
 
 
 
@@ -53,7 +52,7 @@ def _get_completion_percentage(df: pd.DataFrame):
             passing_attempts = completions
     else:
         completions = 0
-        # setting defcault value for passing attemots
+        # setting default value for passing attemots
         passing_attempts = 1
     return (completions/passing_attempts) * 100
 
@@ -99,12 +98,16 @@ def get_best_converter(df: pd.DataFrame) -> pd.DataFrame:
     first_downs = df[df['First Down Conversion'] == True]
     player = first_downs['Target'].mode()
     values = player.values
-    # return values
     return first_downs[first_downs['Target'].isin(values)]
 
 
 # gets the player with the most yards based on the quarter
-def get_best_player_yardage_by_quarter(df: pd.DataFrame, quarter: int) -> pd.DataFrame:
-    pass
-
-
+def get_best_player_yardage(df: pd.DataFrame, quarter: int) -> pd.DataFrame:
+    if quarter < 0:
+        plays = df
+    else:
+        plays = df[df['Quarter'] == quarter]
+    groups = plays.groupby('Target')
+    avg_yds = groups['YDs Gained'].apply(utils.get_avg_yds)
+    player = avg_yds.idxmax()
+    return plays[plays['Target'] == player]

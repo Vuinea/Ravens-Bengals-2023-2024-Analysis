@@ -1,4 +1,5 @@
 import pandas as pd
+from . import utils
 
 def get_run_plays(df: pd.DataFrame) -> pd.DataFrame:
     return df[df['Run'] == True]
@@ -28,5 +29,14 @@ def get_flags(df: pd.DataFrame) -> pd.DataFrame:
     pass
 
 
-def get_team_flags(df: pd.DataFrame, offense: bool) -> pd.DataFrame:
+def get_team_flags(df: pd.DataFrame, offensive: bool) -> pd.DataFrame:
     pass
+
+
+# gets the play with the most yards per attempt
+def get_most_efficient_play(df: pd.DataFrame) -> pd.DataFrame:
+    groups = df.groupby('Play Type')
+    avg_yds = groups['YDs Gained'].apply(utils.get_avg_yds)
+    most_efficient_play = avg_yds.idxmax()
+    return df[df['Play Type'] == most_efficient_play]
+

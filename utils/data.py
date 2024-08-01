@@ -21,6 +21,7 @@ df['Play Type'] = df['Play Type'].apply(clean_play_types).astype("string")
 df['YD Line'] = df['YD Line'].apply(clean_yd_line).astype(int)
 df['Down'] = df['Down'].astype(int)
 df["TD"] = df['TD'].astype(bool)
+df['Quarter'] = df['Quarter'].astype(int)
 
 # creating new columns
 

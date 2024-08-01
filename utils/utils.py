@@ -1,3 +1,5 @@
+import pandas as pd
+
 PLAYERS = {
     8: 'Lamar Jackson',
     89: 'Mark Andrews',
@@ -18,5 +20,6 @@ def is_valid_yd_line(yd_line: int):
     return yd_line >= 0 and yd_line <= 100
 
 
-
+def get_avg_yds(df: pd.DataFrame):
+    return int(df.sum() / len(df))
 
