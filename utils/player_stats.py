@@ -69,10 +69,30 @@ def get_best_redzone_target_by_completion_percentage(df: pd.DataFrame) -> pd.Dat
     player = passes.idxmax()
     return redzone_passes[redzone_passes['Target'] == player]
 
-# name subject to change
-def get_best_third_down_based_on_yds_left(df: pd.DataFrame, yds_left: int) -> pd.DataFrame:
-    pass
+def _get_conversion_percentage(df: pd.DataFrame):
+    conversions = len(df[df['First Down Conversion'] == True])
+    return conversions / len(df)
 
+# name subject to change
+def get_best_third_down_by_yds_left(df: pd.DataFrame, yds_left: int, specificity: str) -> pd.DataFrame:
+    specificity = specificity.lower().strip()
+    if specificity == 'greater':
+        plays = df[(df['YDs Left'] >= yds_left) & (df['Down'] == 3)]
+    elif specificity == 'less':
+        plays = df[(df['YDs Left'] <= yds_left) & (df['Down'] == 3)]
+    else:
+        plays = df[(df['YDs Left'] == yds_left) & (df['Down'] == 3)]
+
+    # getting player with most conversions by percentage
+    grouped_plays = plays.groupby('Target', sort=False)
+    
+    conversion_percentages = grouped_plays.apply(_get_conversion_percentage)
+    if len(conversion_percentages) != 0:
+        best_player = conversion_percentages.idxmax()
+        print(conversion_percentages)
+        return plays[plays['Target'] == best_player]
+    else:
+        return pd.DataFrame()
 
 # get player with the most first downs
 def get_best_converter(df: pd.DataFrame) -> np.int64:
