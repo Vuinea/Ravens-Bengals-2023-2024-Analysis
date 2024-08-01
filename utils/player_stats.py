@@ -95,8 +95,12 @@ def get_best_third_down_by_yds_left(df: pd.DataFrame, yds_left: int, specificity
         return pd.DataFrame()
 
 # get player with the most first downs
-def get_best_converter(df: pd.DataFrame) -> np.int64:
-    pass
+def get_best_converter(df: pd.DataFrame) -> pd.DataFrame:
+    first_downs = df[df['First Down Conversion'] == True]
+    player = first_downs['Target'].mode()
+    values = player.values
+    # return values
+    return first_downs[first_downs['Target'].isin(values)]
 
 
 # gets the player with the most yards based on the quarter
