@@ -33,10 +33,14 @@ def get_team_flags(df: pd.DataFrame, offensive: bool) -> pd.DataFrame:
     pass
 
 
-# gets the play with the most yards per attempt
-def get_most_efficient_play(df: pd.DataFrame) -> pd.DataFrame:
+def get_all_avg_yards(df: pd.DataFrame) -> pd.DataFrame:
     groups = df.groupby('Play Type')
     avg_yds = groups['YDs Gained'].apply(utils.get_avg_yds)
+    return avg_yds
+
+# gets the play with the most yards per attempt
+def get_most_efficient_play(df: pd.DataFrame) -> pd.DataFrame:
+    avg_yds = get_all_avg_yards(df)
     most_efficient_play = avg_yds.idxmax()
     return df[df['Play Type'] == most_efficient_play]
 
