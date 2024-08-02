@@ -5,6 +5,17 @@ class TeamStats:
     def __init__(self, df: pd.DataFrame):
         self.df = df
 
+    def count_plays(self, include_special=True) -> pd.Series:
+        plays = self.df['Play Type'].value_counts()
+        if not include_special:
+            print(plays)
+            del plays['punt']
+            del plays['fg']
+        return plays
+
+    def count_plays_by_quarter(self, quarter) -> pd.Series:
+        pass
+
     def get_run_plays(self) -> pd.DataFrame:
         return self.df[self.df['Run'] == True]
 
