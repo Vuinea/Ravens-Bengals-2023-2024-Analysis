@@ -22,6 +22,7 @@ df['YD Line'] = df['YD Line'].apply(clean_yd_line).astype(int)
 df['Down'] = df['Down'].astype(int)
 df["TD"] = df['TD'].astype(bool)
 df['Quarter'] = df['Quarter'].astype(int)
+df['Flag'] = df['Flag'].astype(bool)
 
 # creating new columns
 

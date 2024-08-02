@@ -30,11 +30,17 @@ class TeamStats:
         return results
 
     def get_flags(self) -> pd.DataFrame:
-        pass
+        flags = self.df[self.df['Flag'] == True]
+        return flags
 
 
     def get_team_flags(self, offensive: bool) -> pd.DataFrame:
-        pass
+        flags = self.get_flags()
+        
+        if offensive:
+            return flags[flags['Offense'] == 1]
+        else:
+            return flags[flags['Offense'] == 0]
 
 
     def get_all_avg_yards(self) -> pd.DataFrame:
