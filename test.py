@@ -3,7 +3,7 @@ from bokeh.plotting import show
 from ravens.graph import graph_plays
 
 # redzone_tds = team_stats.get_redzone_tds(df)
-ans = team_stats.get_team_flags(False)
+# ans = team_stats.count_plaxys_by_quarter(3, True)
 # player = utils.PLAYERS[ans.iloc[0]['Target']]
 # print(ans[['Play Type', 'Run']])
 # print(ans.columns)
@@ -19,3 +19,5 @@ ans = team_stats.get_team_flags(False)
 # show the results
 p = graph_plays()
 show(p)
+
+# print(ans)

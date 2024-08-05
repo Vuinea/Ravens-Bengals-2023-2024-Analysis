@@ -13,8 +13,19 @@ class TeamStats:
             del plays['fg']
         return plays
 
-    def count_plays_by_quarter(self, quarter) -> pd.Series:
-        pass
+    def count_plays_by_quarter(self, quarter: int, include_zeros: bool=False) -> pd.Series:
+        plays = self.df[self.df['Quarter'] == quarter]
+        counted_plays = plays['Play Type'].value_counts()
+        order = ['fg', 'inside run', 'jet sweep', 'motion run', 'outside run', 'pa', 'pa (screen)', 'pass', 'qb run', 'punt']
+        if include_zeros:
+            for play in order:
+                if play not in counted_plays.keys():
+                    counted_plays[play] = 0
+            
+
+        return counted_plays.sort_index()
+        
+        
 
     def get_run_plays(self) -> pd.DataFrame:
         return self.df[self.df['Run'] == True]

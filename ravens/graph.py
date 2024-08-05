@@ -1,19 +1,37 @@
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, LabelSet
+from bokeh.io import curdoc
 from .ravens import team_stats, player_stats
 
+colors = [
+    '#edae49',
+    '#d1495b',
+    '#00798c',
+    '#30638e'
+]
 
+# curdoc().theme = 'dark_minimal'
 
 def graph_plays():
-    counted_plays = team_stats.count_plays(include_special=False)
+    counted_plays = team_stats.count_plays().sort_index()
 
     x = counted_plays.keys().to_list()
     y = counted_plays.values.tolist()
 
-    source = ColumnDataSource(dict(x=x, y=y))
+    quarters = ['Q1', 'Q2', 'Q3', 'Q4']
 
-    p = figure(title="Plays per Play Type", x_range=x, y_axis_label="Times Executed")
+    data = {
+        'play_types': x,
+    }
+    
+    for q in range(1, 5):
+        data[f'Q{q}'] = team_stats.count_plays_by_quarter(q, True)
 
-    p.vbar(x=x, top=y, width=0.5, color='#241773')
+
+    p = figure(title="Plays per Play Type", x_range=x, y_axis_label="Times Executed", toolbar_location=None, tools="hover", tooltips="$name @play_types: @$name")
+
+    # p.vbar(x=x, top=y, width=0.5, color='#241773')
+
+    p.vbar_stack(quarters, x='play_types', width=0.9, color=colors, source=data,
+             legend_label=quarters)
 
     return p
