@@ -1,5 +1,6 @@
 from bokeh.plotting import figure
 from bokeh.io import curdoc
+from bokeh.models import TapTool
 import math
 from .ravens import team_stats, player_stats
 
@@ -10,7 +11,8 @@ colors = [
     '#30638e'
 ]
 
-# curdoc().theme = 'dark_minimal'
+curdoc().theme = 'dark_minimal'
+# curdoc().theme = 'night_sky'
 
 def graph_plays():
     counted_plays = team_stats.count_plays().sort_index()
@@ -29,12 +31,13 @@ def graph_plays():
         data[f'Q{q}'] = team_stats.count_plays_by_quarter(q, True)
 
 
-    p = figure(title="Plays per Play Type", x_range=x, y_axis_label="Times Executed", toolbar_location=None, tools="hover", tooltips="$name @play_types: @$name")
+    p = figure(title="Plays per Play Type", x_range=x, y_axis_label="Times Executed", toolbar_location=None, tools='hover', tooltips="$name @play_types: @$name")
 
     # p.vbar(x=x, top=y, width=0.5, color='#241773')
     p.xaxis.major_label_orientation = math.pi / 4
 
     p.vbar_stack(quarters, x='play_types', width=0.9, color=colors, source=data,
              legend_label=quarters)
+    p.legend.click_policy = 'hide'
 
     return p
