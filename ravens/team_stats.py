@@ -8,7 +8,6 @@ class TeamStats:
     def count_plays(self, include_special=True) -> pd.Series:
         plays = self.df['Play Type'].value_counts()
         if not include_special:
-            print(plays)
             del plays['punt']
             del plays['fg']
         return plays
@@ -114,8 +113,6 @@ class TeamStats:
         player = grouped_conversions.size().idxmax()
         return red_zone_conversions[red_zone_conversions['Target'] == player]
         
-    # value counts
-    # .apply()
 
     # getting the target with the best completion percentage
     def get_best_redzone_target_by_completion_percentage(self) -> pd.DataFrame:

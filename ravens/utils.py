@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+# dictionary of player names
 PLAYERS = {
     8: 'Lamar Jackson',
     89: 'Mark Andrews',
